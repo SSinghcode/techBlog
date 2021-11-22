@@ -37,11 +37,11 @@
 <script src="../js/dashboard.js"></script>
 {{else}}
 <div class='dashboard'>
-  {{#each blogposts as |blogpost|}}
+  {{#each posts as |blogpost|}}
   <div class="card align-center">
-    <h3><a href="/dashpost/{{blogpost.id}}">{{blogpost.title}}</a> <span class='added'>(Posted by
-        {{blogpost.user.username}} on {{format_date blogpost.createdAt}})</span></h3>
-    <p>{{blogpost.content}}</p>
+    <h3><a href="/blogpost/{{blogpost.id}}">{{blogpost.name}}</a> <span class='added'>(Posted by
+      {{blogpost.user.username}} on {{format_date blogpost.createdAt}})</span></h3>
+  <p>{{blogpost.content}}</p>
   </div>
   {{/each}}
 </div>

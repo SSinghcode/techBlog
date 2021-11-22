@@ -12,15 +12,8 @@ const {
 router.get('/', async (req, res) => {
   try {
     const dbPostData = await Post.findAll({
-      include: [    
-        {
-          model: User,
-          attributes: [
-            'username',
-          ],
-        },
-      ],
-    });
+      include: [User]
+    })
 
     const posts = dbPostData.map((post) =>
       post.get({ plain: true })

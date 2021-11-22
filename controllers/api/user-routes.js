@@ -25,35 +25,30 @@ router.post('/', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
-  try {
-    const userData = await User.findOne({ where: { username: req.body.username, } });
+ User.findOne({
+   where: {
+     username: req.body.username
+   }
+ }).then(dbUserData => {
+   if(!dbUserData){
+     res.status(400).json({message: "No User Found"});
+     return;
+   }
 
-    if (!dbUserData) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect username or password, please try again' });
-      return;
-    }
+   const checkPassword = dbUserData.checkPassword(req.body.password);
+   if(!dbUserData){
+    res.status(400).json({message: "Password Incorrect"});
+    return;
+   }
 
-    const validPassword = await userData.checkPassword(req.body.password);
+   req.session.save(() => {
+    req.session.user_id = dbUserData.id;
+    req.session.username = dbUserData.username;
+    req.session.loggedIn = true;
 
-    if (!validPassword) {
-      res
-        .status(400)
-        .json({ message: 'Incorrect username or password, please try again' });
-      return;
-    }
-
-    req.session.save(() => {
-      req.session.user_id = dbUserData.id;
-      req.session.loggedIn = true;
-      
-      res.json({ user: dbUserData, message: 'You are now logged in!' });
-    });
-
-  } catch (err) {
-    res.status(500).json(err);
-  }
+    res.json(dbUserData)
+  })
+ })
 });
 
 // Logout

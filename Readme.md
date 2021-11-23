@@ -1,0 +1,1 @@
+In this project I will be  to building a full stack application by utilizing handlebars, sequelize, express, and mySQL tech blog .In this application user can sign up and  then post to a discussion board while keeping track of their own posts.
